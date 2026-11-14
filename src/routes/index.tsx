@@ -3,6 +3,7 @@ import { ArrowDown, ArrowRight, ArrowUpRight, BadgeCheck, Compass, Crosshair, Or
 import { artifacts, homeHero } from "@/data/artifacts";
 import { ArchiveImg } from "@/components/archive/ArchiveImg";
 import { SiteFooter, SiteHeader } from "@/components/archive/SiteHeader";
+import { Planetarium } from "@/components/expedition/Planetarium";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -32,20 +33,7 @@ function Index() {
     <div className="space-app-shell">
       <SiteHeader />
       <main>
-        <section className="cosmos-hero">
-          <ArchiveImg image={homeHero} eager className="cosmos-image" />
-          <div className="cosmos-shade" />
-          <div className="hero-copy">
-            <div className="hero-kicker"><span className="live-dot" /> PLANETARY EXPEDITION / FIELD BRIEFING <span className="kicker-line" /> NASA MISSION STORIES</div>
-            <h1>The frontier <em>is not finished.</em></h1>
-            <p className="hero-subtitle">Humanity sent machines ahead. Their stories are still unfolding.</p>
-            <p className="hero-description">Take the controls of a planetary expedition. Trace the routes, inspect the machines and follow the evidence left across the Moon, Mars and deep space.</p>
-            <div className="hero-actions"><Link to="/archive" className="primary-explore"><Rocket size={17} /> Enter the archive <ArrowUpRight size={17} /></Link><a href="#apollo-timeline" className="text-explore">Follow a mission sequence <ArrowDown size={15} /></a></div>
-            <div className="hero-proof"><span><BadgeCheck size={16} /> Source-linked research</span><span><Orbit size={16} /> {artifacts.length} investigations</span><span><Telescope size={16} /> Made for curious minds</span></div>
-          </div>
-          <div className="hero-coordinate">40° N · 3° E <span>MOON · MARS · DEEP SPACE</span></div>
-          <div className="hero-scroll"><span /> SCROLL TO EXPLORE</div>
-        </section>
+        <Planetarium />
 
         <section className="stats-ribbon" aria-label="Archive overview">
           <div><strong>{artifacts.length}</strong><span>Curated investigations</span></div><div><strong>{moon.length.toString().padStart(2,"0")}</strong><span>Moon records</span></div><div><strong>{mars.length.toString().padStart(2,"0")}</strong><span>Mars records</span></div><div><strong>{other.length.toString().padStart(2,"0")}</strong><span>Other destinations</span></div><div><strong>1964—2026</strong><span>Research period</span></div>
