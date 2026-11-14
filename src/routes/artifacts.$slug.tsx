@@ -64,7 +64,7 @@ function StoryPage() {
   };
 
   return (
-    <div className="min-h-screen">
+    <div className="story-page min-h-screen">
       <SiteHeader />
       <section className="relative h-[85vh] min-h-[560px] overflow-hidden">
         <ArchiveImg image={artifact.hero} eager className="absolute inset-0 h-full w-full [&_img]:animate-drift" />
