@@ -1,7 +1,9 @@
 name: Import Echoes of Exploration
 
 on:
-  workflow_dispatch:
+  push:
+    paths:
+      - ".github/workflows/import-echoes.yml"
 
 permissions:
   contents: write
