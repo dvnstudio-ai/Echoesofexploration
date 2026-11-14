@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { ArrowDown, ArrowRight, Crosshair } from "lucide-react";
 const worlds=[{name:"EARTH",sub:"ORIGIN WORLD",stat:"MISSION CONTROL",color:"#73c8ff",intro:"Every journey begins somewhere. Follow the missions that carried our machines beyond home."},{name:"THE MOON",sub:"LUNAR FRONTIER",stat:"12+ HUMAN VISITORS",color:"#d6d1c6",intro:"A landscape of footprints, descent stages and instruments still reflecting signals from Earth."},{name:"MARS",sub:"THE RED PLANET",stat:"ROBOTIC EXPLORATION",color:"#ff805b",intro:"A world of silent landers, stranded orbiters and rovers that changed how we see another planet."}];
 const vs="attribute vec2 p; void main(){gl_Position=vec4(p,0.,1.);}";
-const fs=\`precision highp float;uniform vec2 res;uniform float t;uniform float selected;uniform vec2 pointer;
+const fs=`precision highp float;uniform vec2 res;uniform float t;uniform float selected;uniform vec2 pointer;
 float hash(vec3 p){p=fract(p*.3183099+.1);p*=17.;return fract(p.x*p.y*p.z*(p.x+p.y+p.z));}
 float noise(vec3 x){vec3 i=floor(x),f=fract(x);f=f*f*(3.-2.*f);return mix(mix(mix(hash(i),hash(i+vec3(1,0,0)),f.x),mix(hash(i+vec3(0,1,0)),hash(i+vec3(1,1,0)),f.x),f.y),mix(mix(hash(i+vec3(0,0,1)),hash(i+vec3(1,0,1)),f.x),mix(hash(i+vec3(0,1,1)),hash(i+vec3(1,1,1)),f.x),f.y),f.z);}
 vec3 pal(float n,float id,vec3 q){if(id<.5){float land=smoothstep(.48,.62,n);return mix(vec3(.018,.12,.27),vec3(.10,.31,.20),land)+vec3(.7,.8,.8)*smoothstep(.7,.86,noise(q*8.+t*.012))*.22;}if(id<1.5)return vec3(.37,.39,.4)+smoothstep(.58,.82,noise(q*19.))*.26+vec3(.08)*noise(q*47.);return mix(vec3(.2,.055,.025),vec3(.68,.24,.1),smoothstep(.38,.73,n))+vec3(.18,.07,.035)*noise(q*31.);}
