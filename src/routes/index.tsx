@@ -36,15 +36,15 @@ function Index() {
           <ArchiveImg image={homeHero} eager className="cosmos-image" />
           <div className="cosmos-shade" />
           <div className="hero-copy">
-            <div className="hero-kicker"><span className="live-dot" /> AN INTERACTIVE SPACE ARCHIVE <span className="kicker-line" /> NASA MISSION STORIES</div>
-            <h1>A journey <em>beyond limits.</em></h1>
-            <p className="hero-subtitle">Some spacecraft came home. Some went silent. Some were meant to stay.</p>
-            <p className="hero-description">Travel across the Moon, Mars and the wider Solar System to uncover the machines, experiments and spacecraft that became part of other worlds — and discover why each one went silent or stayed behind.</p>
-            <div className="hero-actions"><Link to="/archive" className="primary-explore"><Rocket size={17} /> Enter the archive <ArrowUpRight size={17} /></Link><a href="#apollo-timeline" className="text-explore">Explore the mission timeline <ArrowDown size={15} /></a></div>
+            <div className="hero-kicker"><span className="live-dot" /> PLANETARY EXPEDITION / FIELD BRIEFING <span className="kicker-line" /> NASA MISSION STORIES</div>
+            <h1>The frontier <em>is not finished.</em></h1>
+            <p className="hero-subtitle">Humanity sent machines ahead. Their stories are still unfolding.</p>
+            <p className="hero-description">Take the controls of a planetary expedition. Trace the routes, inspect the machines and follow the evidence left across the Moon, Mars and deep space.</p>
+            <div className="hero-actions"><Link to="/archive" className="primary-explore"><Rocket size={17} /> Enter the archive <ArrowUpRight size={17} /></Link><a href="#apollo-timeline" className="text-explore">Follow a mission sequence <ArrowDown size={15} /></a></div>
             <div className="hero-proof"><span><BadgeCheck size={16} /> Source-linked research</span><span><Orbit size={16} /> {artifacts.length} investigations</span><span><Telescope size={16} /> Made for curious minds</span></div>
           </div>
           <div className="hero-coordinate">40° N · 3° E <span>MOON · MARS · DEEP SPACE</span></div>
-          <div className="hero-scroll"><span /> SCROLL TO DESCEND</div>
+          <div className="hero-scroll"><span /> SCROLL TO EXPLORE</div>
         </section>
 
         <section className="stats-ribbon" aria-label="Archive overview">
@@ -52,7 +52,7 @@ function Index() {
         </section>
 
         <section id="apollo-timeline" className="timeline-section section-wrap">
-          <div className="section-heading"><div><p className="section-eyebrow"><span>01</span> FIRST, A LANDING THAT CHANGED EVERYTHING</p><h2>One mission. <em>Three defining moments.</em></h2><p className="section-intro">Follow Apollo 11 from Earth departure to lunar return. Each moment has its own objective and mission story.</p></div><div className="orbit-stamp"><Orbit size={30} /><span>APOLLO<br />11 / 1969</span></div></div>
+          <div className="section-heading"><div><p className="section-eyebrow"><span>01</span> MISSION LOG / APOLLO 11</p><h2>One landing. <em>A chain of decisions.</em></h2><p className="section-intro">Follow Apollo 11 from Earth departure to lunar return. Each moment has its own objective and mission story.</p></div><div className="orbit-stamp"><Orbit size={30} /><span>APOLLO<br />11 / 1969</span></div></div>
           <div className="mission-track">
             <div className="track-line" />
             {apolloStages.map((stage) => (
@@ -68,7 +68,7 @@ function Index() {
 
         <section className="worlds-section">
           <div className="worlds-backdrop" />
-          <div className="section-wrap worlds-inner"><div className="section-heading light-heading"><div><p className="section-eyebrow"><span>02</span> CHOOSE YOUR DESTINATION</p><h2>Three environments. <em>Countless traces.</em></h2><p className="section-intro">Go where the evidence leads: the Moon, Mars and the wider Solar System. Every artifact opens a deeper investigation.</p></div><Sparkles className="world-spark" size={35} /></div>
+          <div className="section-wrap worlds-inner"><div className="section-heading light-heading"><div><p className="section-eyebrow"><span>02</span> SELECT YOUR NEXT WORLD</p><h2>Three worlds. <em>One human footprint.</em></h2><p className="section-intro">Go where the evidence leads: the Moon, Mars and the wider Solar System. Every artifact opens a deeper investigation.</p></div><Sparkles className="world-spark" size={35} /></div>
             <div className="world-cards">
               <Link to="/archive" className="world-card moon-card"><img className="world-photo moon-photo" src="https://images-assets.nasa.gov/image/PIA00405/PIA00405~large.jpg" alt="Lunar surface photographed by NASA's Lunar Orbiter missions" loading="lazy" /><span className="world-image-credit">NASA / Lunar Orbiter</span><div className="world-card-top"><span>DESTINATION 01</span><span>{moon.length.toString().padStart(2,"0")} RECORDS</span></div><div className="world-card-copy"><p>THE SILENT FRONTIER</p><h3>The Moon</h3><span>From deliberate impacts to instruments that still reflect laser pulses. Explore the hardware that remains in the lunar dust.</span><b>Explore lunar artifacts <ArrowUpRight size={17} /></b></div></Link>
               <Link to="/archive" className="world-card mars-card"><img className="world-photo mars-photo" src="https://images-assets.nasa.gov/image/PIA02820/PIA02820~large.jpg" alt="Mars surface photographed by NASA spacecraft" loading="lazy" /><span className="world-image-credit">NASA / JPL-Caltech</span><div className="world-card-top"><span>DESTINATION 02</span><span>{mars.length.toString().padStart(2,"0")} RECORDS</span></div><div className="world-card-copy"><p>THE RED PLANET ARCHIVE</p><h3>Mars</h3><span>Rovers, landers and landing systems left across an alien landscape. Discover how their missions ended — and what they taught us.</span><b>Explore Martian artifacts <ArrowUpRight size={17} /></b></div></Link>
@@ -77,12 +77,12 @@ function Index() {
           </div>
         </section>
 
-        <section className="investigations-section section-wrap"><div className="section-heading"><div><p className="section-eyebrow"><span>03</span> OPEN THE CASE FILES</p><h2>Every artifact has <em>a story.</em></h2><p className="section-intro">Start with a featured investigation. Each record includes its objective, mission, components, ending and scientific legacy.</p></div><Link to="/archive" className="all-records-link">View all {artifacts.length} records <ArrowUpRight size={16} /></Link></div>
+        <section className="investigations-section section-wrap"><div className="section-heading"><div><p className="section-eyebrow"><span>03</span> FIELD INTELLIGENCE / SELECTED RECORDS</p><h2>Every machine left <em>a signal.</em></h2><p className="section-intro">Start with a featured investigation. Each record includes its objective, mission, components, ending and scientific legacy.</p></div><Link to="/archive" className="all-records-link">View all {artifacts.length} records <ArrowUpRight size={16} /></Link></div>
           <div className="investigation-grid">{artifacts.slice(0,6).map((a,i)=>(<Link to="/artifacts/$slug" params={{slug:a.slug}} className="investigation-card" key={a.slug}><div className="investigation-image"><ArchiveImg image={a.hero} showCredit={false} className="h-full w-full"/><span className="record-number">CASE FILE / {String(i+1).padStart(2,"0")}</span><span className={`world-tag ${a.destination === "Moon" ? "tag-moon" : a.destination === "Mars" ? "tag-mars" : "tag-other"}`}>{a.destinationDetail ?? a.destination}</span></div><div className="investigation-copy"><p className="mission-name">{a.mission}</p><h3>{a.name}</h3><div className="brief-block"><b>OBJECTIVE</b><p>{a.objective}</p></div><div className="brief-block"><b>MISSION</b><p>{a.missionOverview}</p></div><span className="card-open">Open investigation <ArrowUpRight size={15}/></span></div></Link>))}</div>
           <div className="more-records"><span>THE CURATED ARCHIVE CONTAINS {artifacts.length} SOURCE-LINKED RECORDS</span><Link to="/archive">Continue into the archive <ArrowRight size={16}/></Link></div>
         </section>
 
-        <section className="curiosity-band"><div className="curiosity-orbit"><Orbit size={54}/></div><div><p className="section-eyebrow">THE UNIVERSE IS STILL FULL OF QUESTIONS</p><h2>Look closer. <em>Think deeper.</em></h2><p>What makes a mission successful if its hardware never comes home? Start investigating, compare evidence and make your own discoveries.</p></div><Link to="/archive" className="primary-explore">Begin your investigation <ArrowUpRight size={17}/></Link></section>
+        <section className="curiosity-band"><div className="curiosity-orbit"><Orbit size={54}/></div><div><p className="section-eyebrow">EXPEDITION QUESTION / 001</p><h2>Go farther. <em>Question everything.</em></h2><p>What makes a mission successful if its hardware never comes home? Start investigating, compare evidence and make your own discoveries.</p></div><Link to="/archive" className="primary-explore">Begin your investigation <ArrowUpRight size={17}/></Link></section>
       </main>
       <SiteFooter />
     </div>
