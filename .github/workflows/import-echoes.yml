@@ -1,9 +1,7 @@
 name: Import Echoes of Exploration
 
 on:
-  push:
-    paths:
-      - ".github/workflows/import-echoes.yml"
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -35,10 +33,9 @@ jobs:
 
           with ZipFile(archive) as z:
               for info in z.infolist():
-                  name = info.filename
-                  p = PurePosixPath(name)
+                  p = PurePosixPath(info.filename)
                   if p.is_absolute() or ".." in p.parts:
-                      raise SystemExit(f"Unsafe archive path: {name}")
+                      raise SystemExit(f"Unsafe archive path: {info.filename}")
               z.extractall(temp)
 
           source = temp / "echoes"
