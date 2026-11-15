@@ -15,6 +15,7 @@ export type MassItem = {
   basis: string;
   sourceLabel: string;
   sourceUrl: string;
+  relatedSources?: { label: string; url: string }[];
 };
 
 export type MassWeightRecord = {
@@ -40,14 +41,14 @@ export const massWeightLedger: Record<string, MassWeightRecord> = {
     note: "NASA publishes 997.9 kg as spacecraft mass. This is not a measured landed mass, so a lunar-surface weight is deliberately not calculated from it.",
   },
   "spirit": {
-    items: [{ label: "Spirit rover", massKg: 185, basis: "Rover-only mass; NASA Science reports approximately 185 kg. NASA EDL comparison separately lists 539 kg for the complete landed MER system", sourceLabel: "NASA Science — Spirit", sourceUrl: "https://science.nasa.gov/mission/mer-spirit/" }],
+    items: [{ label: "Spirit rover", massKg: 185, basis: "Rover-only mass; NASA Science reports approximately 185 kg. NASA EDL comparison separately lists 539 kg for the complete landed MER system", sourceLabel: "NASA Science — Spirit", sourceUrl: "https://science.nasa.gov/mission/mer-spirit/", relatedSources: [{ label: "NASA EDL comparison — 539 kg complete landed MER system", url: "https://www.nasa.gov/wp-content/uploads/2024/02/10-2024-architecture-workshop-white-paper-mars-challenges.pdf" }] }],
     status: "verified",
     surfaceGravityMps2: mars,
     surfaceLabel: "Mars surface reference",
     note: "NASA Science reports each Mars Exploration Rover at approximately 185 kg. The 539 kg EDL figure is the complete landed MER system, while 1,062 kg is the launch spacecraft mass; neither is the rover-only mass.",
   },
   "opportunity": {
-    items: [{ label: "Opportunity rover", massKg: 185, basis: "Rover-only mass; NASA Science reports approximately 185 kg. NASA EDL comparison separately lists 539 kg for the complete landed MER system", sourceLabel: "NASA Science — Opportunity", sourceUrl: "https://science.nasa.gov/mission/mer-opportunity/" }],
+    items: [{ label: "Opportunity rover", massKg: 185, basis: "Rover-only mass; NASA Science reports approximately 185 kg. NASA EDL comparison separately lists 539 kg for the complete landed MER system", sourceLabel: "NASA Science — Opportunity", sourceUrl: "https://science.nasa.gov/mission/mer-opportunity/", relatedSources: [{ label: "NASA EDL comparison — 539 kg complete landed MER system", url: "https://www.nasa.gov/wp-content/uploads/2024/02/10-2024-architecture-workshop-white-paper-mars-challenges.pdf" }] }],
     status: "verified",
     surfaceGravityMps2: mars,
     surfaceLabel: "Mars surface reference",
@@ -81,7 +82,7 @@ export const massWeightLedger: Record<string, MassWeightRecord> = {
   "sojourner-pathfinder": {
     items: [
       { label: "Sojourner rover", massKg: 10.5, basis: "Rover-only mass", sourceLabel: "NASA JPL Robotics — Sojourner", sourceUrl: "https://www-robotics.jpl.nasa.gov/what-we-do/flight-projects/pathfinder/" },
-      { label: "Mars Pathfinder lander (lander-only)", massKg: 264, basis: "Lander-only mass; Sojourner rover is listed separately at 10.5 kg. Do not confuse this with the 360 kg complete landed-system figure in the EDL comparison", sourceLabel: "NASA NSSDCA — Mars Pathfinder", sourceUrl: "https://nssdc.gsfc.nasa.gov/planetary/mesur.html" },
+      { label: "Mars Pathfinder lander (lander-only)", massKg: 264, basis: "Lander-only mass; Sojourner rover is listed separately at 10.5 kg. Do not confuse this with the 360 kg complete landed-system figure in the EDL comparison", sourceLabel: "NASA NSSDCA — Mars Pathfinder", sourceUrl: "https://nssdc.gsfc.nasa.gov/planetary/mesur.html", relatedSources: [{ label: "NASA EDL comparison — 360 kg complete landed system", url: "https://www.nasa.gov/wp-content/uploads/2024/02/10-2024-architecture-workshop-white-paper-mars-challenges.pdf" }] },
     ],
     status: "verified",
     surfaceGravityMps2: mars,
@@ -89,7 +90,7 @@ export const massWeightLedger: Record<string, MassWeightRecord> = {
     note: "The rover and lander are separate surface artifacts. NASA NSSDCA lists the lander-only mass as 264 kg and the rover as 10.5 kg. A separate NASA EDL comparison reports 360 kg for the complete landed system; that system-level value is not substituted for the lander-only mass.",
   },
   "viking-landers": {
-    items: [{ label: "Viking landed system (each)", massKg: 603, basis: "Landed mass in NASA Mars EDL comparison; distinct from 930 kg entry mass. NASA's Viking lander tech-spec page lists 657 kg on a different configuration basis", sourceLabel: "NASA — Mars EDL comparison", sourceUrl: "https://www.nasa.gov/wp-content/uploads/2024/02/10-2024-architecture-workshop-white-paper-mars-challenges.pdf" }],
+    items: [{ label: "Viking landed system (each)", massKg: 603, basis: "Landed mass in NASA Mars EDL comparison; distinct from 930 kg entry mass. NASA's Viking lander tech-spec page lists 657 kg on a different configuration basis", sourceLabel: "NASA — Mars EDL comparison", sourceUrl: "https://www.nasa.gov/wp-content/uploads/2024/02/10-2024-architecture-workshop-white-paper-mars-challenges.pdf", relatedSources: [{ label: "NASA Viking lander technical specifications — 657 kg", url: "https://science.nasa.gov/mission/viking/spacecraft-and-science/" }] }],
     status: "partial",
     surfaceGravityMps2: mars,
     surfaceLabel: "Mars surface reference",
@@ -103,7 +104,7 @@ export const massWeightLedger: Record<string, MassWeightRecord> = {
     note: "The displayed mass is the landed spacecraft mass. Weight is calculated at the conventional Mars surface gravity of 3.71 m/s².",
   },
   "insight": {
-    items: [{ label: "InSight lander", massKg: 360, basis: "NASA Science lander technical-spec mass; JPL's launch press kit gives approximately 358 kg, while the complete launch spacecraft was 694 kg", sourceLabel: "NASA Science — InSight spacecraft", sourceUrl: "https://science.nasa.gov/mission/insight/spacecraft/" }],
+    items: [{ label: "InSight lander", massKg: 360, basis: "NASA Science lander technical-spec mass; JPL's launch press kit gives approximately 358 kg, while the complete launch spacecraft was 694 kg", sourceLabel: "NASA Science — InSight spacecraft", sourceUrl: "https://science.nasa.gov/mission/insight/spacecraft/", relatedSources: [{ label: "NASA JPL InSight launch press kit — 694 kg complete spacecraft / ~358 kg lander", url: "https://www.jpl.nasa.gov/news/press_kits/insight/launch/facts/" }, { label: "NASA EDL comparison — 375 kg landed-system basis", url: "https://www.nasa.gov/wp-content/uploads/2024/02/10-2024-architecture-workshop-white-paper-mars-challenges.pdf" }] }],
     status: "partial",
     surfaceGravityMps2: mars,
     surfaceLabel: "Mars surface reference",
