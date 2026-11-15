@@ -1,6 +1,7 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { artifacts, getArtifact, type Artifact } from "@/data/artifacts";
+import { getStoryDirection } from "@/data/story-directions";
 import { ArchiveImg } from "@/components/archive/ArchiveImg";
 import { SiteFooter, SiteHeader } from "@/components/archive/SiteHeader";
 import { useNarration, type NarrationItem } from "@/hooks/use-narration";
@@ -40,6 +41,7 @@ export const Route = createFileRoute("/artifacts/$slug")({
 
 function StoryPage() {
   const { artifact } = Route.useLoaderData();
+  const storyDirection = getStoryDirection(artifact.slug);
   const items = useMemo<NarrationItem[]>(
     () =>
       artifact.chapters.flatMap((c, ci) =>
@@ -64,7 +66,7 @@ function StoryPage() {
   };
 
   return (
-    <div className="min-h-screen">
+    <div className="story-page min-h-screen">
       <SiteHeader />
       <section className="relative h-[85vh] min-h-[560px] overflow-hidden">
         <ArchiveImg image={artifact.hero} eager className="absolute inset-0 h-full w-full [&_img]:animate-drift" />
@@ -111,6 +113,33 @@ function StoryPage() {
           <article><p className="brief-kicker"><span>02</span> MISSION</p><p>{artifact.missionOverview ?? artifact.chapters[0]?.segments.find((segment) => segment.kind === "fact")?.text ?? artifact.summary}</p></article>
         </div>
       </section>
+
+      {storyDirection && (
+        <section className="story-direction-panel border-y border-border bg-card">
+          <div className="mx-auto grid max-w-7xl gap-8 px-6 py-12 md:grid-cols-12 md:px-10">
+            <div className="md:col-span-5">
+              <p className="eyebrow text-primary">Documentary story direction</p>
+              <h2 className="mt-3 font-display text-3xl leading-tight md:text-4xl">{storyDirection.title}</h2>
+              <p className="mt-5 text-xl leading-relaxed">{storyDirection.question}</p>
+            </div>
+            <div className="space-y-5 md:col-span-7">
+              <article><p className="eyebrow">The investigation</p><p className="mt-2 leading-relaxed text-foreground/85">{storyDirection.lens}</p></article>
+              <article><p className="eyebrow">Narration direction</p><p className="mt-2 leading-relaxed text-foreground/85">{storyDirection.voice}</p></article>
+              <div className="border-t border-border pt-4">
+                <p className="eyebrow">Chapter cues</p>
+                <ul className="mt-3 grid gap-3 sm:grid-cols-2">
+                  {storyDirection.chapters.map((cue) => (
+                    <li key={cue.id} className="border-l border-primary/50 pl-3">
+                      <p className="font-mono text-xs uppercase tracking-wider text-primary">{artifact.chapters.find((chapter) => chapter.id === cue.id)?.title ?? cue.id}</p>
+                      <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{cue.cue}</p>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
 
       <NarrationBar
         n={n}

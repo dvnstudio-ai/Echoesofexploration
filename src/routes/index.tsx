@@ -3,6 +3,7 @@ import { ArrowDown, ArrowRight, ArrowUpRight, BadgeCheck, Compass, Crosshair, Or
 import { artifacts, homeHero } from "@/data/artifacts";
 import { ArchiveImg } from "@/components/archive/ArchiveImg";
 import { SiteFooter, SiteHeader } from "@/components/archive/SiteHeader";
+import { SplineHero } from "@/components/expedition/SplineHero";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -33,7 +34,7 @@ function Index() {
       <SiteHeader />
       <main>
         <section className="cosmos-hero">
-          <ArchiveImg image={homeHero} eager className="cosmos-image" />
+          <SplineHero />
           <div className="cosmos-shade" />
           <div className="hero-copy">
             <div className="hero-kicker"><span className="live-dot" /> AN INTERACTIVE SPACE ARCHIVE <span className="kicker-line" /> NASA MISSION STORIES</div>
