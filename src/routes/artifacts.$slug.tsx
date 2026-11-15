@@ -303,6 +303,22 @@ function NarrationBar({
             >
               {n.playing ? "❚❚ Pause" : "▶ Listen"}
             </button>
+            <div className="flex items-center gap-1 rounded-sm border border-border p-1" role="group" aria-label="Narration style">
+              <button
+                onClick={() => n.changeMode("story")}
+                aria-pressed={n.mode === "story"}
+                className={cn("px-3 py-2 font-mono text-[0.65rem] uppercase tracking-wider transition-colors", n.mode === "story" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground")}
+              >
+                ◉ Story mode
+              </button>
+              <button
+                onClick={() => n.changeMode("documentary")}
+                aria-pressed={n.mode === "documentary"}
+                className={cn("px-3 py-2 font-mono text-[0.65rem] uppercase tracking-wider transition-colors", n.mode === "documentary" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground")}
+              >
+                Documentary
+              </button>
+            </div>
             <label className="eyebrow flex items-center gap-2">
               Speed
               <select
