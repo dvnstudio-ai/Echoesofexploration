@@ -11,8 +11,8 @@ export function SiteHeader() {
           <span className="brand-mark"><Orbit size={22} strokeWidth={1.5} /></span>
           <span><strong>ECHOES<span> / </span>EXPLORATION</strong><small>AN ARCHIVE OF HUMAN PRESENCE</small></span>
         </Link>
-        <button className="mobile-menu" aria-label="Toggle navigation" aria-expanded={open} onClick={() => setOpen(!open)}><Menu size={21}/></button>
-        <div className={`nav-links ${open ? "nav-open" : ""}`}>
+        <button type="button" className="mobile-menu" aria-label="Toggle navigation" aria-controls="primary-navigation" aria-expanded={open} onClick={() => setOpen(!open)}><Menu size={21}/></button>
+        <div id="primary-navigation" className={`nav-links ${open ? "nav-open" : ""}`}>
           <Link to="/" onClick={() => setOpen(false)}>The expedition</Link>
           <Link to="/archive" onClick={() => setOpen(false)}>Artifact archive</Link>
           <Link to="/method" onClick={() => setOpen(false)}>Research method</Link>
