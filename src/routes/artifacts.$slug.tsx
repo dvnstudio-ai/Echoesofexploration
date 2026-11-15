@@ -117,7 +117,12 @@ function StoryPage() {
                 ) : (
                   <p className="mt-3 border-t border-border pt-3 text-xs text-muted-foreground">Surface weight: not applicable to this orbital, launch or multi-component configuration.</p>
                 )}
-                <a href={item.sourceUrl} target="_blank" rel="noreferrer" className="mt-3 inline-block text-xs underline decoration-border underline-offset-4 hover:text-primary">{item.sourceLabel} ↗</a>
+                <div className="mt-3 flex flex-wrap gap-x-3 gap-y-1 text-xs">
+                  <a href={item.sourceUrl} target="_blank" rel="noreferrer" className="underline decoration-border underline-offset-4 hover:text-primary">{item.sourceLabel} ↗</a>
+                  {item.relatedSources?.map((source) => (
+                    <a key={source.url} href={source.url} target="_blank" rel="noreferrer" className="underline decoration-border underline-offset-4 hover:text-primary">{source.label} ↗</a>
+                  ))}
+                </div>
               </div>
             ))}
             {massWeight && massWeight.items.length === 0 && (
