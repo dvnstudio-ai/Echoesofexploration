@@ -94,9 +94,7 @@ export const massWeightLedger: Record<string, MassWeightRecord> = {
       { label: "Viking 2 lander", massKg: 657, basis: "Lander mass as listed in NASA spacecraft specifications", sourceLabel: "NASA Science — Viking 2", sourceUrl: "https://science.nasa.gov/mission/viking-2/" },
     ],
     status: "partial",
-    surfaceGravityMps2: mars,
-    surfaceLabel: "Mars surface reference",
-    note: "The cited specification is a lander mass, not a claim that both landers retained that exact mass at every mission phase. NASA's Mars lander comparison separately reports landed-system masses; those bases should not be mixed.",
+    note: "The cited specification is a lander mass, not a claim that both landers retained that exact mass at every mission phase. NASA's Mars lander comparison separately reports landed-system masses; those bases should not be mixed, so no surface-weight calculation is made from this value.",
   },
   "phoenix": {
     items: [{ label: "Phoenix lander", massKg: 350, basis: "Landed spacecraft mass", sourceLabel: "NASA Science — Phoenix", sourceUrl: "https://science.nasa.gov/mission/phoenix/" }],
