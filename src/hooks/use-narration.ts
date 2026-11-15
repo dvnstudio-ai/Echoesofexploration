@@ -48,6 +48,7 @@ export function useNarration(items: NarrationItem[]) {
   const [rate, setRate] = useState(1.2);
   const [mode, setMode] = useState<NarrationMode>("story");
   const [voice, setVoice] = useState<SpeechSynthesisVoice | null>(null);
+  const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
   const indexRef = useRef(0);
   const sentenceRef = useRef(0);
   const playingRef = useRef(false);
@@ -69,6 +70,7 @@ export function useNarration(items: NarrationItem[]) {
     setSupported(true);
     const chooseVoice = () => {
       const voices = window.speechSynthesis.getVoices();
+      setVoices(voices);
       const usEnglish = voices.filter((v) => /^en-US$/i.test(v.lang));
       const english = voices.filter((v) => /^en(-|$)/i.test(v.lang));
       const pool = usEnglish.length ? usEnglish : english;
@@ -131,7 +133,7 @@ export function useNarration(items: NarrationItem[]) {
     } else utterance.lang = "en-US";
 
     utterance.rate = Math.min(1.5, Math.max(0.65, rateRef.current));
-    utterance.pitch = delivery.pitch;
+    utterance.pitch = 1;
     utterance.volume = 1;
     utterance.onend = () => {
       if (!playingRef.current || indexRef.current !== itemIndex || sentenceRef.current !== sentenceIndex) return;
@@ -166,6 +168,27 @@ export function useNarration(items: NarrationItem[]) {
     window.speechSynthesis?.cancel();
   }, [clearPause]);
 
+  const changeVoice = useCallback((voiceName: string) => {
+    const chosen = voices.find((v) => v.name === voiceName) ?? null;
+    voiceRef.current = chosen;
+    setVoice(chosen);
+    if (playingRef.current) speakFrom(indexRef.current, sentenceRef.current);
+  }, [voices, speakFrom]);
+
+  const previewVoice = useCallback(() => {
+    const synth = window.speechSynthesis;
+    synth.cancel();
+    const sample = new SpeechSynthesisUtterance("Hello. This is a preview of the Echoes of Exploration narration voice.");
+    if (voiceRef.current) {
+      sample.voice = voiceRef.current;
+      sample.lang = voiceRef.current.lang;
+    } else sample.lang = "en-US";
+    sample.rate = 1.2;
+    sample.pitch = 1;
+    sample.volume = 1;
+    synth.speak(sample);
+  }, []);
+
   const changeRate = useCallback((nextRate: number) => {
     rateRef.current = nextRate;
     setRate(nextRate);
@@ -185,5 +208,5 @@ export function useNarration(items: NarrationItem[]) {
     if (playingRef.current) speakFrom(nextIndex, 0);
   }, [speakFrom]);
 
-  return { supported, playing, current, rate, mode, voiceName: voice?.name ?? null, play, pause, seek, changeRate, changeMode };
+  return { supported, playing, current, rate, mode, voiceName: voice?.name ?? null, voices, play, pause, seek, changeRate, changeMode, changeVoice, previewVoice };
 }
