@@ -45,13 +45,13 @@ export function useNarration(items: NarrationItem[]) {
   const [supported, setSupported] = useState(false);
   const [playing, setPlaying] = useState(false);
   const [current, setCurrent] = useState(0);
-  const [rate, setRate] = useState(1);
+  const [rate, setRate] = useState(1.2);
   const [mode, setMode] = useState<NarrationMode>("story");
   const [voice, setVoice] = useState<SpeechSynthesisVoice | null>(null);
   const indexRef = useRef(0);
   const sentenceRef = useRef(0);
   const playingRef = useRef(false);
-  const rateRef = useRef(1);
+  const rateRef = useRef(1.2);
   const modeRef = useRef<NarrationMode>("story");
   const voiceRef = useRef<SpeechSynthesisVoice | null>(null);
   const pauseTimerRef = useRef<number | null>(null);
@@ -68,13 +68,24 @@ export function useNarration(items: NarrationItem[]) {
     if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
     setSupported(true);
     const chooseVoice = () => {
-      const voices = window.speechSynthesis.getVoices().filter((v) => v.lang.toLowerCase().startsWith("en"));
-      const local = voices.filter((v) => v.localService);
-      const pool = local.length ? local : voices;
-      const chosen =
-        pool.find((v) => /natural|enhanced|premium/i.test(v.name)) ??
-        pool.find((v) => /Daniel|Arthur|Aaron|Google.*English|Samantha/i.test(v.name)) ??
-        pool.find((v) => v.default) ?? pool[0] ?? null;
+      const voices = window.speechSynthesis.getVoices();
+      const usEnglish = voices.filter((v) => /^en-US$/i.test(v.lang));
+      const english = voices.filter((v) => /^en(-|$)/i.test(v.lang));
+      const pool = usEnglish.length ? usEnglish : english;
+      // Web Speech does not expose a standard gender field. Prefer common male
+      // US voice names, then fall back to the best available en-US voice.
+      const maleUs = pool.filter((v) =>
+        /\b(david|guy|christopher|eric|brian|andrew|alex|mark|tom|tony|roger|evan|nathan|fred|aaron|daniel)\b/i.test(v.name) &&
+        !/samantha|zira|aria|jenny|ana|michelle|susan|karen/i.test(v.name)
+      );
+      const localMale = maleUs.find((v) => v.localService);
+      const chosen = localMale ?? maleUs[0] ??
+        usEnglish.find((v) => v.localService && /natural|enhanced/i.test(v.name)) ??
+        usEnglish.find((v) => v.default) ??
+        usEnglish[0] ??
+        english.find((v) => v.default) ??
+        english[0] ??
+        null;
       voiceRef.current = chosen;
       setVoice(chosen);
     };
@@ -119,7 +130,7 @@ export function useNarration(items: NarrationItem[]) {
       utterance.lang = selectedVoice.lang;
     } else utterance.lang = "en-US";
 
-    utterance.rate = Math.min(1.5, Math.max(0.65, rateRef.current * delivery.rate));
+    utterance.rate = Math.min(1.5, Math.max(0.65, rateRef.current));
     utterance.pitch = delivery.pitch;
     utterance.volume = 1;
     utterance.onend = () => {
