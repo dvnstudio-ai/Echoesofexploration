@@ -1,6 +1,7 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { artifacts, getArtifact, type Artifact } from "@/data/artifacts";
+import { earthWeightNewtons, getMassWeight, surfaceWeightNewtons } from "@/data/mass-weight";
 import { getStoryDirection } from "@/data/story-directions";
 import { ArchiveImg } from "@/components/archive/ArchiveImg";
 import { SiteFooter, SiteHeader } from "@/components/archive/SiteHeader";
@@ -42,6 +43,7 @@ export const Route = createFileRoute("/artifacts/$slug")({
 function StoryPage() {
   const { artifact } = Route.useLoaderData();
   const storyDirection = getStoryDirection(artifact.slug);
+  const massWeight = getMassWeight(artifact.slug);
   const items = useMemo<NarrationItem[]>(
     () =>
       artifact.chapters.flatMap((c, ci) =>
@@ -93,14 +95,65 @@ function StoryPage() {
         </dl>
       </section>
 
+
+      {massWeight && (
+        <section className="mx-auto max-w-7xl px-6 py-12 md:px-10" aria-labelledby="mass-weight-ledger">
+          <div className="flex flex-wrap items-end justify-between gap-4 border-b border-border pb-5">
+            <div>
+              <p className="eyebrow">Engineering evidence · Mass & weight</p>
+              <h2 id="mass-weight-ledger" className="mt-2 text-3xl md:text-4xl">How heavy was the machine?</h2>
+            </div>
+            <p className="max-w-md text-sm text-muted-foreground">Mass is measured in kilograms. Weight is a force in newtons and changes with gravity. Values below keep launch, dry, landed and component masses distinct.</p>
+          </div>
+          <div className="mt-6 overflow-hidden border border-border">
+            <div className="grid gap-px bg-border sm:grid-cols-2 lg:grid-cols-3">
+              {massWeight.items.map((item) => (
+                <article key={item.label} className="bg-background p-5">
+                  <p className="eyebrow">{item.label}</p>
+                  <p className="mt-3 font-display text-3xl">{item.massKg.toLocaleString("en-US", { maximumFractionDigits: 2 })} <span className="font-sans text-sm text-muted-foreground">kg</span></p>
+                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{item.basis}</p>
+                  <div className="mt-4 border-t border-border pt-3">
+                    <p className="eyebrow">Earth-equivalent weight</p>
+                    <p className="mt-1 font-mono text-sm">{earthWeightNewtons(item.massKg).toLocaleString("en-US", { maximumFractionDigits: 1 })} N</p>
+                    {massWeight.surfaceGravityMps2 && (
+                      <>
+                        <p className="eyebrow mt-3">{massWeight.surfaceLabel ?? "Destination surface reference"}</p>
+                        <p className="mt-1 font-mono text-sm">{surfaceWeightNewtons(item.massKg, massWeight.surfaceGravityMps2).toLocaleString("en-US", { maximumFractionDigits: 1 })} N</p>
+                      </>
+                    )}
+                  </div>
+                  <a href={item.sourceUrl} target="_blank" rel="noreferrer" className="mt-4 inline-block text-xs underline decoration-border underline-offset-4 hover:text-primary">{item.sourceLabel} ↗</a>
+                </article>
+              ))}
+              {massWeight.items.length === 0 && (
+                <div className="bg-background p-5 sm:col-span-2 lg:col-span-3">
+                  <p className="font-display text-xl">No single verified mass for this grouped artifact</p>
+                  <p className="mt-2 text-sm text-muted-foreground">The record contains multiple vehicles, stages or instruments with different configurations. A single number would imply false precision.</p>
+                </div>
+              )}
+            </div>
+          </div>
+          <div className="mt-5 grid gap-4 border-l-2 border-primary/60 pl-5 md:grid-cols-2">
+            <div>
+              <p className="eyebrow">Verification status · {massWeight.status.replaceAll("-", " ")}</p>
+              <p className="mt-2 text-sm leading-relaxed text-foreground/85">{massWeight.note}</p>
+            </div>
+            <div>
+              <p className="eyebrow">Calculation method</p>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">Earth: W = m × 9.80665 m/s². Moon: 1.62 m/s². Mars: 3.71 m/s². Destination weight is shown only for a mass explicitly identified as a landed/surface vehicle mass. Orbital and deep-space objects do not have a fixed surface weight.</p>
+            </div>
+          </div>
+        </section>
+      )}
+
       {artifact.specs && (
         <section className="mx-auto max-w-7xl px-6 py-12 md:px-10" aria-labelledby="technical-profile">
           <div className="flex flex-wrap items-end justify-between gap-4 border-b border-border pb-5">
             <div><p className="eyebrow">Engineering dossier</p><h2 id="technical-profile" className="mt-2 text-3xl md:text-4xl">Inside the machine</h2></div>
-            <p className="max-w-md text-sm text-muted-foreground">Specifications are shown only where a cited mission source supports them. Values may refer to launch mass, landed mass or a component; read the labels carefully.</p>
+            <p className="max-w-md text-sm text-muted-foreground">Additional engineering specifications are shown separately. Use the Mass & Weight ledger above as the source of truth for mass basis and calculated forces.</p>
           </div>
           <dl className="mt-6 grid gap-px border border-border bg-border sm:grid-cols-2 lg:grid-cols-4">
-            {([ ["Mass / weight", artifact.specs.mass], ["Dimensions", artifact.specs.dimensions], ["Power", artifact.specs.power], ["Mobility / propulsion", artifact.specs.propulsion], ["Planned lifetime", artifact.specs.designLife], ["Science instruments", artifact.specs.instruments], ["Structure", artifact.specs.structure], ["Engineering note", artifact.specs.notes] ] as const).filter((item) => item[1]).map(([label, value]) => (
+            {([ ["Dimensions", artifact.specs.dimensions], ["Power", artifact.specs.power], ["Mobility / propulsion", artifact.specs.propulsion], ["Planned lifetime", artifact.specs.designLife], ["Science instruments", artifact.specs.instruments], ["Structure", artifact.specs.structure], ["Engineering note", artifact.specs.notes] ] as const).filter((item) => item[1]).map(([label, value]) => (
               <div key={label} className="bg-background p-5"><dt className="eyebrow">{label}</dt><dd className="mt-3 text-sm leading-relaxed text-foreground/85">{value}</dd></div>
             ))}
           </dl>
