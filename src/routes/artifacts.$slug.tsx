@@ -326,11 +326,14 @@ function NarrationBar({
                 onChange={(e) => n.changeRate(Number(e.target.value))}
                 className="rounded-sm border border-input bg-background px-2 py-1 font-mono text-xs text-foreground"
               >
-                {[0.75, 1, 1.25, 1.5].map((r) => (
+                {[0.75, 1, 1.2, 1.25, 1.5].map((r) => (
                   <option key={r} value={r}>{r}×</option>
                 ))}
               </select>
             </label>
+            <span className="eyebrow text-muted-foreground" title={n.voiceName ?? "Using the browser's default English voice"}>
+              Voice: {n.voiceName ?? "English voice"} · US preferred
+            </span>
             <button onClick={() => setCaptions(!captions)} className="eyebrow hover:text-primary" aria-pressed={captions}>
               Captions {captions ? "on" : "off"}
             </button>
