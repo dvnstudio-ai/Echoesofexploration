@@ -19,6 +19,11 @@ describe("mass and weight evidence ledger", () => {
         expect(item.sourceLabel.trim().length).toBeGreaterThan(0);
         expect(() => new URL(item.sourceUrl)).not.toThrow();
         expect(item.sourceUrl).toMatch(/^https:\/\//);
+        for (const source of item.relatedSources ?? []) {
+          expect(() => new URL(source.url)).not.toThrow();
+          expect(source.url).toMatch(/^https:\/\//);
+          expect(source.label.trim().length).toBeGreaterThan(0);
+        }
       }
       if (record.status === "not-published") {
         expect(record.items, slug).toHaveLength(0);
