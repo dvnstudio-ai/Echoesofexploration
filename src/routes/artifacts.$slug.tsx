@@ -2,6 +2,7 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { artifacts, getArtifact, type Artifact } from "@/data/artifacts";
 import { getStoryDirection } from "@/data/story-directions";
+import { getMissionStory } from "@/data/mission-stories";
 import { ArchiveImg } from "@/components/archive/ArchiveImg";
 import { SiteFooter, SiteHeader } from "@/components/archive/SiteHeader";
 import { useNarration, type NarrationItem } from "@/hooks/use-narration";
@@ -42,9 +43,10 @@ export const Route = createFileRoute("/artifacts/$slug")({
 function StoryPage() {
   const { artifact } = Route.useLoaderData();
   const storyDirection = getStoryDirection(artifact.slug);
+  const chapters = useMemo(() => getMissionStory(artifact), [artifact]);
   const items = useMemo<NarrationItem[]>(
     () =>
-      artifact.chapters.flatMap((c, ci) =>
+      chapters.flatMap((c, ci) =>
         c.segments.map((s, si) => ({ chapterIndex: ci, segmentIndex: si, text: s.text, creative: s.kind === "creative" })),
       ),
     [artifact],
@@ -110,7 +112,7 @@ function StoryPage() {
       <section className="objective-mission-strip">
         <div className="objective-mission-inner">
           <article><p className="brief-kicker"><span>01</span> OBJECTIVE</p><p>{artifact.objective ?? artifact.summary}</p></article>
-          <article><p className="brief-kicker"><span>02</span> MISSION</p><p>{artifact.missionOverview ?? artifact.chapters[0]?.segments.find((segment) => segment.kind === "fact")?.text ?? artifact.summary}</p></article>
+          <article><p className="brief-kicker"><span>02</span> MISSION</p><p>{artifact.missionOverview ?? chapters[0]?.segments.find((segment) => segment.kind === "fact")?.text ?? artifact.summary}</p></article>
         </div>
       </section>
 
@@ -130,7 +132,7 @@ function StoryPage() {
                 <ul className="mt-3 grid gap-3 sm:grid-cols-2">
                   {storyDirection.chapters.map((cue) => (
                     <li key={cue.id} className="border-l border-primary/50 pl-3">
-                      <p className="font-mono text-xs uppercase tracking-wider text-primary">{artifact.chapters.find((chapter) => chapter.id === cue.id)?.title ?? cue.id}</p>
+                      <p className="font-mono text-xs uppercase tracking-wider text-primary">{chapters.find((chapter) => chapter.id === cue.id)?.title ?? cue.id}</p>
                       <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{cue.cue}</p>
                     </li>
                   ))}
@@ -154,7 +156,7 @@ function StoryPage() {
           <nav aria-label="Chapters" className="md:sticky md:top-28">
             <p className="eyebrow mb-4">Chronology</p>
             <ol className="relative border-l border-border">
-              {artifact.chapters.map((c, ci) => {
+              {chapters.map((c, ci) => {
                 const isActive = active?.chapterIndex === ci && (n.playing || n.current > 0);
                 return (
                   <li key={c.id} className="relative pl-5 pb-5">
@@ -183,7 +185,7 @@ function StoryPage() {
         </aside>
 
         <main className="md:col-span-9">
-          {artifact.chapters.map((c, ci) => (
+          {chapters.map((c, ci) => (
             <section key={c.id} id={c.id} className="scroll-mt-28 border-t border-border py-14 first:border-t-0 first:pt-0">
               <p className="eyebrow">
                 Chapter {ci + 1}
