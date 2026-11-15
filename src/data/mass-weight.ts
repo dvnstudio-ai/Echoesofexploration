@@ -2,9 +2,9 @@
  * Mass and weight ledger for the 31 curated archive records.
  *
  * Mass is invariant and is always expressed in kg.
- * Earth-equivalent weight is calculated as mass × 9.80665 m/s².
- * A destination-surface weight is shown ONLY when the listed mass is
- * a landed/surface vehicle mass and the surface gravity is applicable.
+ * Weight is a force, calculated as mass × local gravitational acceleration.
+ * A destination-surface weight is shown ONLY when the listed mass basis
+ * represents the relevant surface vehicle or lander configuration.
  * Launch/entry mass, dry mass, landed mass and component mass are never
  * silently substituted for one another. Grouped records may have several
  * separately identified objects or no single comparable mass.
