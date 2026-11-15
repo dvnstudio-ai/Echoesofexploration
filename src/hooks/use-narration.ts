@@ -3,8 +3,9 @@ import { useCallback, useEffect, useRef, useState } from "react";
 export type NarrationItem = { chapterIndex: number; segmentIndex: number; text: string; creative: boolean };
 
 /**
- * Narration via the browser's built-in Web Speech API — no API key needed.
- * Speaks items one by one so captions and the timeline can follow along.
+ * Free, keyless narration using voices already exposed by the visitor's browser/OS.
+ * No HeyGen/ElevenLabs request, API key, server endpoint, or per-listen charge.
+ * Voice availability and sound vary by the visitor's device and installed voices.
  */
 export function useNarration(items: NarrationItem[]) {
   const [supported, setSupported] = useState(false);
@@ -18,17 +19,31 @@ export function useNarration(items: NarrationItem[]) {
 
   useEffect(() => {
     if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
+
     setSupported(true);
-    const pick = () => {
-      const voices = window.speechSynthesis.getVoices().filter((v) => v.lang.startsWith("en"));
+    const pickVoice = () => {
+      const englishVoices = window.speechSynthesis
+        .getVoices()
+        .filter((candidate) => candidate.lang.toLowerCase().startsWith("en"));
+
+      // Prefer an installed/local English voice so narration does not depend on
+      // a remote voice service. Fall back to any English voice supplied by the OS.
+      const localVoices = englishVoices.filter((candidate) => candidate.localService);
+      const candidates = localVoices.length ? localVoices : englishVoices;
       const preferred =
-        voices.find((v) => /Daniel|Google UK English Male|Arthur|Aaron|Samantha/i.test(v.name)) ?? voices[0] ?? null;
+        candidates.find((candidate) => /natural|enhanced|premium/i.test(candidate.name)) ??
+        candidates.find((candidate) => /Daniel|Arthur|Aaron|Google.*English|Samantha/i.test(candidate.name)) ??
+        candidates.find((candidate) => candidate.default) ??
+        candidates[0] ??
+        null;
+
       setVoice(preferred);
     };
-    pick();
-    window.speechSynthesis.addEventListener("voiceschanged", pick);
+
+    pickVoice();
+    window.speechSynthesis.addEventListener("voiceschanged", pickVoice);
     return () => {
-      window.speechSynthesis.removeEventListener("voiceschanged", pick);
+      window.speechSynthesis.removeEventListener("voiceschanged", pickVoice);
       window.speechSynthesis.cancel();
     };
   }, []);
@@ -43,16 +58,28 @@ export function useNarration(items: NarrationItem[]) {
         setPlaying(false);
         return;
       }
+
       indexRef.current = i;
       setCurrent(i);
-      const u = new SpeechSynthesisUtterance(items[i].text);
-      if (voice) u.voice = voice;
-      u.rate = rateRef.current * (items[i].creative ? 0.92 : 1);
-      u.pitch = items[i].creative ? 0.95 : 1;
-      u.onend = () => {
+      const utterance = new SpeechSynthesisUtterance(item.text);
+      if (voice) {
+        utterance.voice = voice;
+        utterance.lang = voice.lang;
+      } else {
+        utterance.lang = "en-US";
+      }
+      utterance.rate = rateRef.current * (item.creative ? 0.92 : 1);
+      utterance.pitch = item.creative ? 0.95 : 1;
+      utterance.onend = () => {
         if (playingRef.current && indexRef.current === i) speakFrom(i + 1);
       };
-      synth.speak(u);
+      utterance.onerror = (event) => {
+        if (event.error !== "canceled" && event.error !== "interrupted" && indexRef.current === i) {
+          playingRef.current = false;
+          setPlaying(false);
+        }
+      };
+      synth.speak(utterance);
     },
     [items, voice],
   );
@@ -74,19 +101,19 @@ export function useNarration(items: NarrationItem[]) {
   }, []);
 
   const changeRate = useCallback(
-    (r: number) => {
-      rateRef.current = r;
-      setRate(r);
+    (nextRate: number) => {
+      rateRef.current = nextRate;
+      setRate(nextRate);
       if (playingRef.current) speakFrom(indexRef.current);
     },
     [speakFrom],
   );
 
   const seek = useCallback(
-    (i: number) => {
-      indexRef.current = i;
-      setCurrent(i);
-      if (playingRef.current) speakFrom(i);
+    (nextIndex: number) => {
+      indexRef.current = nextIndex;
+      setCurrent(nextIndex);
+      if (playingRef.current) speakFrom(nextIndex);
     },
     [speakFrom],
   );
