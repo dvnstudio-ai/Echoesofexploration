@@ -331,9 +331,16 @@ function NarrationBar({
                 ))}
               </select>
             </label>
-            <span className="eyebrow text-muted-foreground" title={n.voiceName ?? "Using the browser's default English voice"}>
-              Voice: {n.voiceName ?? "English voice"} · US preferred
-            </span>
+            <label className="eyebrow flex items-center gap-2">
+              Voice
+              <select value={n.voiceName ?? ""} onChange={(e) => n.changeVoice(e.target.value)} className="max-w-[190px] rounded-sm border border-input bg-background px-2 py-1 font-mono text-xs text-foreground" aria-label="Choose narration voice">
+                <option value="" disabled>Select installed voice</option>
+                {n.voices.filter((v) => /^en(-|$)/i.test(v.lang)).map((v) => (
+                  <option key={v.name + v.lang} value={v.name}>{v.name} ({v.lang})</option>
+                ))}
+              </select>
+            </label>
+            <button onClick={n.previewVoice} className="eyebrow hover:text-primary">Preview voice</button>
             <button onClick={() => setCaptions(!captions)} className="eyebrow hover:text-primary" aria-pressed={captions}>
               Captions {captions ? "on" : "off"}
             </button>
