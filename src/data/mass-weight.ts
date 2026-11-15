@@ -40,14 +40,14 @@ export const massWeightLedger: Record<string, MassWeightRecord> = {
     note: "NASA publishes 997.9 kg as spacecraft mass. This is not a measured landed mass, so a lunar-surface weight is deliberately not calculated from it.",
   },
   "spirit": {
-    items: [{ label: "Spirit rover", massKg: 170, basis: "Rover-only mass; excludes cruise stage, backshell, parachute and lander", sourceLabel: "NASA — Comparing Two Mars Rover Projects", sourceUrl: "https://mars.nasa.gov/internal_resources/698/" }],
+    items: [{ label: "Spirit rover", massKg: 174, basis: "Rover-only mass; NASA EDL table separately lists 539 kg for the complete landed MER system", sourceLabel: "NASA — Mars EDL comparison", sourceUrl: "https://www.nasa.gov/wp-content/uploads/2024/02/10-2024-architecture-workshop-white-paper-mars-challenges.pdf" }],
     status: "verified",
     surfaceGravityMps2: mars,
     surfaceLabel: "Mars surface reference",
     note: "NASA's rover comparison gives 170 kg for each Mars Exploration Rover. A separate 1,062 kg figure refers to the larger spacecraft/landing system, not the rover alone.",
   },
   "opportunity": {
-    items: [{ label: "Opportunity rover", massKg: 170, basis: "Rover-only mass; excludes cruise stage, backshell, parachute and lander", sourceLabel: "NASA — Comparing Two Mars Rover Projects", sourceUrl: "https://mars.nasa.gov/internal_resources/698/" }],
+    items: [{ label: "Opportunity rover", massKg: 174, basis: "Rover-only mass; NASA EDL table separately lists 539 kg for the complete landed MER system", sourceLabel: "NASA — Mars EDL comparison", sourceUrl: "https://www.nasa.gov/wp-content/uploads/2024/02/10-2024-architecture-workshop-white-paper-mars-challenges.pdf" }],
     status: "verified",
     surfaceGravityMps2: mars,
     surfaceLabel: "Mars surface reference",
@@ -89,22 +89,19 @@ export const massWeightLedger: Record<string, MassWeightRecord> = {
     note: "The rover and its stationary lander are two different objects. The Mars surface-weight calculations below use the stated rover-only and landed-lander masses, not the combined launch stack.",
   },
   "viking-landers": {
-    items: [
-      { label: "Viking 1 lander", massKg: 657, basis: "Lander mass as listed in NASA spacecraft specifications", sourceLabel: "NASA Science — Viking spacecraft and science", sourceUrl: "https://science.nasa.gov/mission/viking/spacecraft-and-science/" },
-      { label: "Viking 2 lander", massKg: 657, basis: "Lander mass as listed in NASA spacecraft specifications", sourceLabel: "NASA Science — Viking 2", sourceUrl: "https://science.nasa.gov/mission/viking-2/" },
-    ],
+    items: [{ label: "Viking lander (each)", massKg: 603, basis: "Landed mass in NASA Mars EDL comparison; distinct from 930 kg entry mass", sourceLabel: "NASA — Mars EDL comparison", sourceUrl: "https://www.nasa.gov/wp-content/uploads/2024/02/10-2024-architecture-workshop-white-paper-mars-challenges.pdf" }],
     status: "partial",
     note: "The cited specification is a lander mass, not a claim that both landers retained that exact mass at every mission phase. NASA's Mars lander comparison separately reports landed-system masses; those bases should not be mixed, so no surface-weight calculation is made from this value.",
   },
   "phoenix": {
-    items: [{ label: "Phoenix lander", massKg: 350, basis: "Landed spacecraft mass", sourceLabel: "NASA Science — Phoenix", sourceUrl: "https://science.nasa.gov/mission/phoenix/" }],
+    items: [{ label: "Phoenix lander", massKg: 364, basis: "Landed mass in NASA Mars EDL comparison; distinct from 573 kg entry mass", sourceLabel: "NASA — Mars EDL comparison", sourceUrl: "https://www.nasa.gov/wp-content/uploads/2024/02/10-2024-architecture-workshop-white-paper-mars-challenges.pdf" }],
     status: "verified",
     surfaceGravityMps2: mars,
     surfaceLabel: "Mars surface reference",
     note: "The displayed mass is the landed spacecraft mass. Weight is calculated at the conventional Mars surface gravity of 3.71 m/s².",
   },
   "insight": {
-    items: [{ label: "InSight lander", massKg: 358, basis: "Lander mass at the Martian surface; cruise/entry mass is larger", sourceLabel: "NASA Science — InSight spacecraft", sourceUrl: "https://science.nasa.gov/mission/insight/spacecraft/" }],
+    items: [{ label: "InSight lander", massKg: 360, basis: "NASA Science lander specification; distinct from 694 kg complete spacecraft launch mass", sourceLabel: "NASA Science — InSight spacecraft", sourceUrl: "https://science.nasa.gov/mission/insight/spacecraft/" }],
     status: "verified",
     surfaceGravityMps2: mars,
     surfaceLabel: "Mars surface reference",
